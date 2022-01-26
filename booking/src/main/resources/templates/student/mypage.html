@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>내 정보</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/header :: fragment-header"></div>
+
+		<div class="container my-2">
+			<table class="table">
+				<tr>
+					<td>학번</td>
+					<td>
+						<span th:text="${student.sid}"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>이름</td>
+					<td>
+						<span th:text="${student.name}"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>전화번호</td>
+					<td>
+						<span th:text="${student.phone}"></span>
+					</td>
+				</tr>
+
+			</table>
+			
+			<div class="text-center">
+				<a class="btn btn-secondary col-md-2" href="/booking">메인</a>
+				<a class="btn btn-primary col-md-2" href="/student/mybooking">내 예약</a>
+				<a class="btn btn-primary col-md-2" href="/student/update">수정</a>
+				<button class="btn btn-danger col-md-2" onclick="deleteUser()">탈퇴</button>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		function deleteUser() {
+			if (confirm("삭제하시겠습니까?"))
+				location.href = "/student/delete";
+		}
+	</script>
+</html>

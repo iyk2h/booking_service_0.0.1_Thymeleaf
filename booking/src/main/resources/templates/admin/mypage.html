@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>내 정보</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/aheader :: fragment-header"></div>
+
+		<div class="container my-2">
+			<table border="1" class="table">
+				<tr>
+					<td>아이디</td>
+					<td>
+						<span th:text="${admin.id}"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>이름</td>
+					<td>
+						<span th:text="${admin.name}"></span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>전화번호</td>
+					<td>
+						<span th:text="${admin.phone}"></span>
+					</td>
+				</tr>
+
+				<tr>
+					<td>이메일</td>
+					<td>
+						<span th:text="${admin.email}"></span>
+					</td>
+				</tr>
+			</table>
+			
+			<div class="text-center">
+				<a class="btn btn-secondary col-md-2" href="/manage">메인</a>
+				<a class="btn btn-primary col-md-2" href="/admin/mymanage">내 관리</a>
+				<a class="btn btn-primary col-md-2" href="/admin/update">수정</a>
+				<button class="btn btn-danger col-md-2" onclick="deleteUser()">탈퇴</button>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		function deleteUser() {
+			if (confirm("삭제하시겠습니까?"))
+				location.href = "/admin/delete";
+		}
+	</script>
+</html>

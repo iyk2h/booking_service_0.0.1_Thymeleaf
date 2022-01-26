@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>로그인</title>
+	</head>
+	<body>
+		<div th:replace="/fragments/aheader :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row justify-content-center mt-4">
+				<h3><b>목포대학교 시설 관리 시스템</b></h3>
+				<p>목포대학교에 있는 각종 시설들을 관리하는 시스템입니다.</p>
+				
+				<a href="/manage/facility" class="btn btn-primary col-md-6">시설 관리</a>
+			</div>
+		</div>
+	</body>
+</html>

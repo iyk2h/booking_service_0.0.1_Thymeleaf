@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>시설 예약</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/aheader :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row mx-2 justify-content-center">
+				<div class="col-md-6 my-5">
+					<form name="form" th:action="'/manage/manage/' + ${fno}" method="post">
+						<div class="form-group">
+							<label for="inputStartTime" class="col-form-label">시작 날짜</label>
+							<input id="inputStartTime" type="text" class="form-control" name="start">
+						</div>
+
+                        <div class="form-group">
+							<label for="inputEndTime" class="col-form-label">종료 날짜</label>
+							<input id="inputEndTime" type="text" class="form-control" name="end">
+						</div>
+
+                        <div class="form-group">
+							<label for="inputReason" class="col-form-label">이유</label>
+                            <input id="inputReason" type="text" class="form-control" name="reason">
+						</div>
+
+                        <div class="form-group mt-2">
+							<button type="submit" onclick="check()" class="btn btn-primary col-md-12">관리</button>
+						</div>
+						
+                        <div class="form-group mt-2">
+							<a href="/manage/facility" class="btn btn-secondary col-md-12">시설 목록</a>
+                        </div>
+
+						<div class="form-group mt-2">
+							<a href="/manage" class="btn btn-info col-md-12">메인 화면</a>
+                        </div>
+					</form>
+
+                    <br>
+                    <h3 align="center">관리 목록</h3>
+                    <table class="table">
+                        <thead>
+                            <tr align="center">
+                                <td>관리번호</td>
+                                <td>관리자</td>
+                                <td>시작 시간</td>
+                                <td>종료 시간</td>
+                                <td>이유</td>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            <tr th:each="manage : ${manageList}" align="center">
+                                <td th:text="${manage.mno}"></td>
+                                <td th:text="${manage.admin.name}"></td>
+                                <td th:text="${#temporals.format(manage.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${#temporals.format(manage.endTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${manage.reason}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+				</div>
+			</div>
+		</div>
+	</body>
+
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <script>
+        $("#inputStartTime").datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dayNames: ['일','월','화','수','목','금','토'],
+            dayNamesShort: ['일','월','화','수','목','금','토'],
+            dayNamesMin: ['일','월','화','수','목','금','토'],
+            showMonthAfterYear: true,
+            changeMonth: true,
+            changeYear: true,
+            yearSuffix: '년',
+            beforeShowDay: disableDays
+        });
+
+        function disableDays(date) {
+            var cur = new Date();
+
+            if (date < new Date().setDate(cur.getDate() - 1))
+                return [false];
+
+            return [true];
+        }
+
+        $("#inputEndTime").datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dayNames: ['일','월','화','수','목','금','토'],
+            dayNamesShort: ['일','월','화','수','목','금','토'],
+            dayNamesMin: ['일','월','화','수','목','금','토'],
+            showMonthAfterYear: true,
+            changeMonth: true,
+            changeYear: true,
+            yearSuffix: '년',
+            beforeShowDay: disableDays2
+        });
+
+        function disableDays2(date) {
+            var cur = new Date();
+
+            if (date < new Date().setDate(cur.getDate() - 1))
+                return [false];
+
+            if (date < new Date($("inputStartTime").val()))
+                return [false];
+
+            return [true];
+        }
+    </script>
+</html>
+

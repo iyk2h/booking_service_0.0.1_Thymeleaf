@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>내 예약</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/aheader :: fragment-header"></div>
+
+		<div class="container my-2">
+			<table class="table">
+				<thead>
+					<tr align="center">
+						<td>관리번호</td>
+						<td>시설</td>
+						<td>시작 시간</td>
+						<td>종료 시간</td>
+						<td>이유</td>
+						<td>취소</td>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="manage : ${manageList}" align="center">
+						<td th:text="${manage.mno}"></td>
+						<td th:text="${manage.facility.name}"></td>
+						<td th:text="${#temporals.format(manage.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${#temporals.format(manage.endTime, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${manage.reason}"></td>
+						<td>
+							<button class="btn btn-danger" th:onclick="'deleteManage(' + ${manage.mno} + ')'">취소</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div class="text-center">
+				<a class="btn btn-secondary col-md-2" href="/manage">메인</a>
+				<a class="btn btn-primary col-md-2" href="/admin/mypage">내 정보</a>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		function deleteManage(mno) {
+			if (confirm("취소하시겠습니까?"))
+				location.href = "/manage/cancel/" + mno;
+		}
+	</script>
+</html>

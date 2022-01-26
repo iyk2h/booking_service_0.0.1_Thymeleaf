@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>로그인</title>
+	</head>
+	<body>
+		<div th:replace="/fragments/header :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row justify-content-center mt-4">
+				<h3><b>목포대학교 시설 예약 시스템</b></h3>
+				<p>목포대학교에 있는 각종 시설들을 이용하고 싶을 때 예약을 하여 시설을 이용 할 수 있는 시스템입니다.</p>
+				
+				<a href="/booking/facility" class="btn btn-primary col-md-6">시설 예약 하러 가기</a>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>시설 예약</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/header :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row mx-2 justify-content-center">
+				<div class="col-md-6 my-5">
+					<form name="form" th:action="'/booking/booking/' + ${fno}" method="post">
+						<div class="form-group">
+							<label for="inputDate" class="col-form-label">날짜</label>
+							<input id="inputDate" type="text" class="form-control" name="date">
+						</div>
+
+                        <div class="form-group">
+							<label for="inputTime" class="col-form-label">시간</label>
+                            <div>
+                                <th:block th:each="t : ${#numbers.sequence(6, 17)}">
+                                    <input type="radio" class="btn-check" name="btnradio" th:id="'btnradio'+${t}" autocomplete="off" checked="false" disabled="true" th:value="${t}">
+                                    <label class="btn btn-outline-primary" th:for="'btnradio'+${t}" th:text="${#numbers.formatInteger(t, 2)}+':00'"></label>
+                                </th:block>
+                            </div>
+
+						</div>
+
+                        <div class="form-group">
+							<label for="inputHeadCount" class="col-form-label">인원</label>
+                            <input id="inputHeadCount" type="text" class="form-control" name="headcount">
+						</div>
+
+                        <div class="form-group mt-2">
+							<button type="submit" onclick="check()" class="btn btn-primary col-md-12">예약</button>
+						</div>
+						
+						<div class="form-group mt-2">
+							<a href="/booking" class="btn btn-secondary col-md-12">메인 화면</a>
+                        </div>
+					</form>
+
+                    <!-- 안되는 시간 -->
+                    <br>
+                    <h3 align="center">관리 목록</h3>
+                    <table class="table">
+                        <thead>
+                            <tr align="center">
+                                <td>관리번호</td>
+                                <td>관리자</td>
+                                <td>시작 시간</td>
+                                <td>종료 시간</td>
+                                <td>이유</td>
+                            </tr>
+                        </thead>
+        
+                        <tbody>
+                            <tr th:each="manage : ${manageList}" align="center">
+                                <td th:text="${manage.mno}"></td>
+                                <td th:text="${manage.admin.name}"></td>
+                                <td th:text="${#temporals.format(manage.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${#temporals.format(manage.endTime, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${manage.reason}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+				</div>
+			</div>
+		</div>
+	</body>
+
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <script>
+        $("#inputDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '이전 달',
+            nextText: '다음 달',
+            monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+            dayNames: ['일','월','화','수','목','금','토'],
+            dayNamesShort: ['일','월','화','수','목','금','토'],
+            dayNamesMin: ['일','월','화','수','목','금','토'],
+            showMonthAfterYear: true,
+            changeMonth: true,
+            changeYear: true,
+            yearSuffix: '년',
+            beforeShowDay: disableDays
+        });
+
+        var manageList = [];
+
+    
+        $.ajax(
+            {
+                type : "GET",
+                url : "/manage/manage/getManageList",
+                data : {"fno" : [[${fno}]]},
+                
+                success : function(data) {
+                    manageList = data;
+                }
+            }
+
+        );
+
+        function disableDays(date) {
+            var cur = new Date();
+
+            if (date < new Date().setDate(cur.getDate() - 1))
+                return [false];
+
+            for (var i=0; i<manageList.length; i++) {
+                var startDate = new Date(manageList[i].startTime);
+                var endDate = new Date(manageList[i].endTime);
+
+                if (startDate <= date && date <= endDate)
+                    return [false];
+            }
+
+            return [true];
+        }
+
+        //시간 선택시 ajax로 예약 정보 가져옴
+        //inputDate 값 변경이 일어나면
+        $("#inputDate").change(function() {
+            $("input[name=btnradio]").attr("disabled", false);
+
+            $.ajax(
+                {
+                    type : "GET",
+                    url : "/booking/booking/getDateList",
+                    data : {"fno" : [[${fno}]], "date" : $("#inputDate").val()},
+                    
+                    success : function(data) {
+                        for (var i=0; i<data.length; i++) {
+                            console.log(data);
+
+
+                            var booking = data[i];
+                            var date = new Date(booking.startTime);
+                            st = date.getHours();
+
+                            $("#btnradio" + st).attr("disabled", true);
+                        }
+
+                        //현재 시간 이전 비활성화
+                        var curTime = new Date();
+                        var selTime = new Date($("#inputDate").val());
+
+                        if (curTime.getFullYear() == selTime.getFullYear() && curTime.getMonth() == selTime.getMonth() && curTime.getDay() == selTime.getDay()) {
+                            for (var i=6; i<=17; i++) {
+                                var btn = $("#btnradio" + i);
+
+                                if (btn.val() <= curTime.getHours())
+                                    btn.attr("disabled", true);
+                                else
+                                    btn.attr("disabled", false);
+                            }
+                        }
+                    }
+                }
+
+            )
+
+        });
+
+        function check() {
+            
+        }
+    </script>
+</html>
+

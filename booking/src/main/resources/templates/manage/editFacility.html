@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>시설 수정</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/aheader :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8 my-5">
+					<form name="form" th:action="'/manage/facility/update/' + ${fno}" method="post">
+						<div class="form-group row">
+							<label for="inputName" class="col-md-4 col-form-label">시설 이름</label>
+							<div class="col-md-8">
+								<input id="inputName" th:value="${facility.name}" type="text" class="form-control" name="name">
+							</div>
+						</div>
+						
+						<div class="form-group row mt-2">
+							<label for="inputPlace" class="col-md-4 col-form-label">장소</label>
+							<div class="col-md-8">
+								<input id="inputPlace" th:value="${facility.place}" type="text" class="form-control" name="place">
+							</div>
+						</div>
+						
+						<div class="form-group row mt-2">
+							<label for="inputScale" class="col-md-4 col-form-label">크기</label>
+							<div class="col-md-8">
+								<input id="inputScale" th:value="${facility.scale}" type="text" class="form-control" name="scale">
+							</div>
+						</div>
+						
+                        <div class="form-group mt-2">
+							<button type="submit" class="btn btn-primary col-md-12">수정</button>
+						</div>
+						
+						<div class="form-group mt-2">
+							<a href="/manage/facility" class="btn btn-danger col-md-12">취소</a>
+						</div>
+
+						<div class="form-group mt-2">
+							<a href="/manage" class="btn btn-info col-md-12">메인 화면</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

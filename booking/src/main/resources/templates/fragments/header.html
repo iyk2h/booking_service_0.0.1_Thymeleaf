@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+        <title>헤더</title>
+	</head>
+	<body>
+		<div class="container" th:fragment="fragment-header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/booking">목포대학교 시설 예약</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/booking">메인</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/booking/facility">예약</a>
+                            </li>
+                        </ul>
+
+                        <div class="d-flex">
+                            <div th:if="${session.sid == null}">
+                                <a class="btn btn-secondary" href="/student/login">로그인</a>
+                            </div>
+                        
+                            <div th:if="${session.sid != null}">
+                                <a class="text-secondary" href="/student/mypage" th:text="${session.name} +'님'"></a>
+                                <a class="btn btn-secondary" href="/student/logout">로그아웃</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+		</div>
+	</body>
+</html>

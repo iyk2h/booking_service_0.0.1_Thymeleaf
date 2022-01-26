@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<div th:replace="/fragments/head :: fragment-head"></div>
+		<title>정보 수정</title>
+	</head>
+	<body>
+        <div th:replace="/fragments/header :: fragment-header"></div>
+
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-8 my-5">
+					<form name="form" action="/student/update" method="post">
+						<div class="form-group row">
+							<label for="inputSID" class="col-md-4 col-form-label">학번</label>
+							<div class="col-md-8">
+								<input id="inputSID" th:value="${student.sid}" type="text" class="form-control" pattern="[0-9]{6,20}" name="sid" readonly>
+							</div>
+						</div>
+
+						<div class="form-group row mt-2">
+							<label for="inputPW" class="col-md-4 col-form-label">비밀번호</label>
+							<div class="col-md-8">
+								<input id="inputPW" type="password" class="form-control" name="pw">
+							</div>
+						</div>
+						
+						<div class="form-group row mt-2">
+							<label for="inputRePW" class="col-md-4 col-form-label">비밀번호 확인</label>
+							<div class="col-md-8">
+								<input id="inputRePW" type="password" class="form-control" name="repw">
+							</div>
+						</div>
+						
+						<div class="form-group row mt-2">
+							<label for="inputName" class="col-md-4 col-form-label">이름</label>
+							<div class="col-md-8">
+								<input id="inputName" th:value="${student.name}" type="text" class="form-control" name="name">
+							</div>
+						</div>
+						
+						<div class="form-group row mt-2">
+							<label for="inputPhone" class="col-md-4 col-form-label">전화번호</label>
+							<div class="col-md-8">
+								<input id="inputPhone" th:value="${student.phone}" type="tel" class="form-control" name="phone">
+							</div>
+						</div>
+						
+                        <div class="form-group mt-2">
+							<button type="button" class="btn btn-primary col-md-12" onclick="check()">수정</button>
+						</div>
+						
+						<div class="form-group mt-2">
+							<a href="/student/mypage" class="btn btn-danger col-md-12">취소</a>
+						</div>
+
+						<div class="form-group mt-2">
+							<a href="/booking" class="btn btn-info col-md-12">메인 화면</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		function check() {
+			var msg = null;
+			
+			if (document.form.pw.value != document.form.repw.value)
+				msg = "비밀번호가 틀립니다.";
+			
+			if (msg != null) {
+				alert(msg);
+				return;
+			}
+			
+			document.form.submit();
+		}
+	
+	</script>
+</html>
